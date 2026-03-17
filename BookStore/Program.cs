@@ -1,4 +1,4 @@
-using BookStore.Data;
+﻿using BookStore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -33,6 +33,21 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = jwtSettings["Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var token = context.Request.Cookies["jwt"];
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                context.Token = token;
+            }
+
+            return Task.CompletedTask;
+        }
+    };
 });
 
 // Add services to the container.
@@ -62,7 +77,7 @@ app.MapControllers();  // for API endpoints
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Auth}/{action=Login}/{id?}");
 
 app.UseSwagger();
 app.UseSwaggerUI();

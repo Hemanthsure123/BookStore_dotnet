@@ -1,0 +1,41 @@
+﻿@model List<BookStore.Models.CartItem>
+
+<h2>Your Cart</h2>
+
+@if (!Model.Any())
+{
+    <p>Cart is empty</p>
+}
+else
+{
+    decimal totalBill = 0;
+
+    <table class="table">
+        <tr>
+            <th>Book</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>Total</th>
+            <th>Action</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            var total = item.Book.Price * item.Quantity;
+            totalBill += total;
+
+            <tr>
+                <td>@item.Book.Title</td>
+                <td>₹@item.Book.Price</td>
+                <td>@item.Quantity</td>
+                <td>₹@total</td>
+
+                <td>
+                    <a asp-action="Remove" asp-route-id="@item.Id">Remove</a>
+                </td>
+            </tr>
+        }
+    </table>
+
+    <h3>Total Bill: ₹@totalBill</h3>
+}

@@ -2,26 +2,79 @@
     ViewData["Title"] = "Admin Dashboard";
 }
 
-<h2>Admin Dashboard</h2>
+<div class="container mt-4">
 
-<p>Welcome Admin!</p>
+    <h2>Admin Dashboard</h2>
 
-<hr />
+    <p class="text-success">Welcome Admin!</p>
 
-<h4>User Information</h4>
+    <hr />
 
-<ul>
-    <li>Email: @User.Identity.Name</li>
-    <li>Role: Admin</li>
-</ul>
+    <!-- USER INFO -->
+    <h4>User Information</h4>
+    <ul>
+        <li><strong>Email:</strong> @User.Identity.Name</li>
+        <li><strong>Role:</strong> @(User.IsInRole("Admin") ? "Admin" : "User")</li>
+    </ul>
 
-<hr />
+    <hr />
 
-<h3>Admin Actions</h3>
+    <!-- BOOK MANAGEMENT SECTION -->
+    <h4>Book Management</h4>
 
-<ul>
-    <li><a href="#">Add Book</a></li>
-    <li><a href="#">Edit Book</a></li>
-    <li><a href="#">Delete Book</a></li>
-    <li><a href="#">Manage Users</a></li>
-</ul>
+    <div class="row mt-3">
+
+        <!-- VIEW BOOKS -->
+        <div class="col-md-3 mb-3">
+            <div class="card p-3 text-center shadow-sm">
+                <h5>View Books</h5>
+                <p>See all books in the system</p>
+                <a asp-controller="Books" asp-action="Index" class="btn btn-primary">
+                    Go
+                </a>
+            </div>
+        </div>
+
+        <!-- ADD BOOK -->
+        <div class="col-md-3 mb-3">
+            <div class="card p-3 text-center shadow-sm">
+                <h5>Add Book</h5>
+                <p>Create a new book entry</p>
+                <a asp-controller="Books" asp-action="Create" class="btn btn-success">
+                    Add
+                </a>
+            </div>
+        </div>
+
+        <!-- EDIT BOOK -->
+        <div class="col-md-3 mb-3">
+            <div class="card p-3 text-center shadow-sm">
+                <h5>Edit Books</h5>
+                <p>Modify existing books</p>
+                <a asp-controller="Books" asp-action="Index" class="btn btn-warning">
+                    Edit
+                </a>
+            </div>
+        </div>
+
+        <!-- DELETE BOOK -->
+        <div class="col-md-3 mb-3">
+            <div class="card p-3 text-center shadow-sm">
+                <h5>Delete Books</h5>
+                <p>Remove books from system</p>
+                <a asp-controller="Books" asp-action="Index" class="btn btn-danger">
+                    Delete
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <hr />
+
+    <!-- LOGOUT -->
+    <form asp-controller="Auth" asp-action="Logout" method="post">
+        <button type="submit" class="btn btn-dark">Logout</button>
+    </form>
+
+</div>

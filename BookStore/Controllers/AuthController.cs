@@ -70,6 +70,7 @@ namespace BookStore.Controllers
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Role, user.Role)
             };
 
@@ -84,6 +85,15 @@ namespace BookStore.Controllers
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            // delete JWT cookie
+            Response.Cookies.Delete("jwt");
+
+            return RedirectToAction("Login", "Auth");
         }
 
 
@@ -105,6 +115,8 @@ namespace BookStore.Controllers
             Response.Cookies.Append("jwt", token, new CookieOptions
             {
                 HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
                 Expires = DateTime.Now.AddMinutes(60)
             });
 

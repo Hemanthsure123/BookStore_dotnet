@@ -1,0 +1,98 @@
+﻿@model List<BookStore.Models.Book>
+
+@{
+    ViewData["Title"] = "Books";
+}
+
+<h2>Books</h2>
+
+<!-- 🔍 SEARCH + FILTER + SORT -->
+<form method="get">
+
+    <!-- SEARCH -->
+    <input type="text" name="searchString"
+           placeholder="Search by title or author"
+           value="@Context.Request.Query["searchString"]" />
+
+    <!-- FILTER -->
+    <select name="authorFilter">
+        <option value="">All Authors</option>
+
+        @foreach (var author in ViewBag.Authors)
+        {
+            <option value="@author"
+                    selected="@(Context.Request.Query["authorFilter"] == author ? "selected" : null)">
+                @author
+            </option>
+        }
+    </select>
+
+    <!-- SORT -->
+    <select name="sortOrder">
+        <option value="">Default</option>
+        <option value="price_asc"
+                selected="@(Context.Request.Query["sortOrder"] == "price_asc" ? "selected" : null)">
+            Price Low → High
+        </option>
+        <option value="price_desc"
+                selected="@(Context.Request.Query["sortOrder"] == "price_desc" ? "selected" : null)">
+            Price High → Low
+        </option>
+    </select>
+
+    <button type="submit">Apply</button>
+
+</form>
+
+<hr />
+
+<!-- ADMIN ONLY ADD BUTTON -->
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-success">Add New Book</a>
+    </p>
+}
+
+<!-- 📚 BOOK TABLE -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Author</th>
+            <th>Price</th>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <th>Actions</th>
+            }
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.Description</td>
+                <td>@book.Author</td>
+                <td>@book.Price</td>
+
+                <td>
+                    <!-- 👇 DETAILS LINK (FOR ALL USERS) -->
+                    <a asp-action="Details" asp-route-id="@book.Id" class="btn btn-info">
+                        View
+                    </a>
+
+                    <!-- 👇 ADMIN ONLY -->
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@book.Id" class="btn btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@book.Id" class="btn btn-danger">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

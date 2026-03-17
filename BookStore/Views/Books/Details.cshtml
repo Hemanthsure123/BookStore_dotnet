@@ -1,0 +1,35 @@
+﻿@model BookStore.Models.Book
+
+<h2>@Model.Title</h2>
+
+<p>@Model.Description</p>
+<p>Author: @Model.Author</p>
+<p>Price: ₹@Model.Price</p>
+
+<form asp-controller="Cart" asp-action="AddToCart" method="post">
+
+    <input type="hidden" name="bookId" value="@Model.Id" />
+
+    <label>Quantity:</label>
+
+    <button type="button" onclick="dec()">-</button>
+    <input type="number" id="qty" name="quantity" value="1" min="1" max="10" />
+    <button type="button" onclick="inc()">+</button>
+
+    <br /><br />
+
+    <button type="submit">Add to Cart</button>
+
+</form>
+
+<script>
+    function inc() {
+        let q = document.getElementById("qty");
+        if (q.value < 10) q.value++;
+    }
+
+    function dec() {
+        let q = document.getElementById("qty");
+        if (q.value > 1) q.value--;
+    }
+</script>

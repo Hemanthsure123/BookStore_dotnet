@@ -2,25 +2,60 @@
     ViewData["Title"] = "User Dashboard";
 }
 
-<h2>User Dashboard</h2>
+<div class="container mt-4">
 
-<p>Welcome User!</p>
+    <h2>User Dashboard</h2>
 
-<hr />
+    <p class="text-success">Welcome!</p>
 
-<h4>User Information</h4>
+    <hr />
 
-<ul>
-    <li>Email: @User.Identity.Name</li>
-    <li>Role: User</li>
-</ul>
+    <!-- USER INFO -->
+    <h4>User Information</h4>
+    <ul>
+        <li><strong>Email:</strong> @User.Identity.Name</li>
+        <li><strong>Role:</strong> @(User.IsInRole("Admin") ? "Admin" : "User")</li>
+    </ul>
 
-<hr />
+    <hr />
 
-<h3>User Actions</h3>
+    <!-- USER ACTIONS -->
+    <h4>User Actions</h4>
 
-<ul>
-    <li><a href="#">View Books</a></li>
-    <li><a href="#">My Orders</a></li>
-    <li><a href="#">Cart</a></li>
-</ul>
+    <div class="row mt-3">
+
+        <!-- VIEW BOOKS -->
+        <div class="col-md-4 mb-3">
+            <div class="card p-3 text-center shadow-sm">
+                <h5>📚 View Books</h5>
+                <p>Browse all available books</p>
+                <a asp-controller="Books" asp-action="Index" class="btn btn-primary">
+                    Go
+                </a>
+            </div>
+        </div>
+
+        <!-- VIEW CART -->
+        <div class="col-md-4 mb-3">
+            <div class="card p-3 text-center shadow-sm">
+                <h5>🛒 My Cart</h5>
+                <p>View items added to cart</p>
+                <a asp-controller="Cart" asp-action="Index" class="btn btn-warning">
+                    Open Cart
+                </a>
+            </div>
+        </div>
+
+        <!-- MY ORDERS (FUTURE FEATURE) -->
+    
+
+    </div>
+
+    <hr />
+
+    <!-- LOGOUT -->
+    <form asp-controller="Auth" asp-action="Logout" method="post">
+        <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
+
+</div>
